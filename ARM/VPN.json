@@ -36,7 +36,7 @@
             "type": "Microsoft.Network/localNetworkGateways",
             "apiVersion": "2019-08-01",
             "name": "[parameters('localNetworkGateways_lgw_cmonprem_001_name')]",
-            "location": "northeurope",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "localNetworkAddressSpace": {
                     "addressPrefixes": [
@@ -50,7 +50,7 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2019-08-01",
             "name": "[parameters('publicIPAddresses_azurevnetvpngatewayip_name')]",
-            "location": "northeurope",
+            "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Basic",
                 "tier": "Regional"
@@ -65,7 +65,7 @@
             "type": "Microsoft.Network/connections",
             "apiVersion": "2019-08-01",
             "name": "[parameters('connections_cn_onprem2cloud_001_name')]",
-            "location": "northeurope",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('virtualNetworkGateways_azurevnetvpngateway_name'))]",
                 "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localNetworkGateways_lgw_cmonprem_001_name'))]"
@@ -94,7 +94,7 @@
             "type": "Microsoft.Network/virtualNetworkGateways",
             "apiVersion": "2019-08-01",
             "name": "[parameters('virtualNetworkGateways_azurevnetvpngateway_name')]",
-            "location": "northeurope",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_azurevnetvpngatewayip_name'))]"
             ],
