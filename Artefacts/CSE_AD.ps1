@@ -36,30 +36,36 @@ foreach ($RawDisk in $RawDisks)
     $i++
 }
 
-$SecurePassword = ConvertTo-SecureString "$Password" -AsPlainText -Force
 
 #Do we have Data Disk? 
 $DataDisk0 = Get-Volume -FileSystemLabel "Data0" -ErrorAction SilentlyContinue
 
+#installing second domain controller to a new site
+$SecurePassword = ConvertTo-SecureString "$Password" -AsPlainText -Force
+$Credential = New-Object System.Management.Automation.PSCredential ("$($DomainName)\administrator", $SecurePassword)
 switch ($DataDisk0 -ne $null)
 {
     'True'      #Active Directory database storage on first Data Disk 
     {
         $drive = "$($DataDisk0.DriveLetter):"
         #Install-ADDSForest -DomainName "$DomainName" -DatabasePath "$drive\NTDS" -SysvolPath "$drive\SYSVOL" -LogPath "$drive\Logs" -ForestMode Default -DomainMode Default -InstallDns:$true -SafeModeAdministratorPassword $SecurePassword -CreateDnsDelegation:$false -NoRebootOnCompletion:$true -Force:$true
+        New-ADReplicationSite "Azure-Site"
+        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DatabasePath "$drive\NTDS" -DomainName "$DomainName" -InstallDns:$true -LogPath "$drive\NTDS" -NoRebootOnCompletion:$false -SiteName "Azure-Site"  -SysvolPath "$drive\SYSVOL" -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
     }
     
     #nope - not recommended 
     Default 
     {
         #Install-ADDSForest -DomainName "$DomainName" -ForestMode Default -DomainMode Default -InstallDns:$true -SafeModeAdministratorPassword $SecurePassword -CreateDnsDelegation:$false -NoRebootOnCompletion:$true -Force:$true
+        New-ADReplicationSite "Azure-Site"
+        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DomainName "$DomainName" -InstallDns:$true -NoRebootOnCompletion:$false -SiteName "Azure-Site"  -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
     }
 }
 
 #add some DNS forwarders to our DNS server to enable external name resolution
-Add-DnsServerForwarder -IPAddress 168.63.129.16  #add azure intrinsic Name server - this works when VM is in Azure / when onprem you need DNS proxy in azure
-Add-DnsServerForwarder -IPAddress 8.8.8.8        #allow external name resolution
-Add-DnsServerForwarder -IPAddress 208.67.222.222 #add another public dns server
+#Add-DnsServerForwarder -IPAddress 168.63.129.16  #add azure intrinsic Name server - this works when VM is in Azure / when onprem you need DNS proxy in azure
+#Add-DnsServerForwarder -IPAddress 8.8.8.8        #allow external name resolution
+#Add-DnsServerForwarder -IPAddress 208.67.222.222 #add another public dns server
 
 #download the AD connect tool to synch with AAD
 $Downloads = @( `

@@ -8,7 +8,7 @@
         }
     },
     "variables": {
-        "vnetName":"[concat(parameters('vnetPrefix'),resourceGroup().location)]"
+        "vnetName": "[concat(parameters('vnetPrefix'),resourceGroup().location)]"
     },
     "resources": [
         {
@@ -20,6 +20,11 @@
                 "addressSpace": {
                     "addressPrefixes": [
                         "10.1.0.0/16"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": [
+                        "192.168.0.2"
                     ]
                 },
                 "subnets": [
