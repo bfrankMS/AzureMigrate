@@ -63,8 +63,8 @@ switch ($DataDisk0 -ne $null)
 }
 
 #add some DNS forwarders to our DNS server to enable external name resolution
-#Add-DnsServerForwarder -IPAddress 168.63.129.16  #add azure intrinsic Name server - this works when VM is in Azure / when onprem you need DNS proxy in azure
-#Add-DnsServerForwarder -IPAddress 8.8.8.8        #allow external name resolution
+Add-DnsServerForwarder -IPAddress 168.63.129.16  #add azure intrinsic Name server - this works when VM is in Azure / when onprem you need DNS proxy in azure
+Add-DnsServerForwarder -IPAddress 8.8.8.8        #allow external name resolution
 #Add-DnsServerForwarder -IPAddress 208.67.222.222 #add another public dns server
 
 #download the AD connect tool to synch with AAD
