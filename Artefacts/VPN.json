@@ -1,41 +1,45 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "localNetworkGateways_lgw_cmonprem_001_name": {
-            "defaultValue": "lgw-vpnonprem",
+        "localNetworkGateway": {
+            "defaultValue": "lgw-vpnOnprem",
             "type": "String"
         },
-        "publicIPAddresses_azurevnetvpngatewayip_name": {
-            "defaultValue": "azurevnetvpngatewayip",
+        "publicIPAddress": {
+            "defaultValue": "pip-vpnGateway",
             "type": "String"
         },
-        "virtualNetworkGateways_azurevnetvpngateway_name": {
-            "defaultValue": "azurevnetvpngateway",
+        "virtualNetworkGateway": {
+            "defaultValue": "vpnGateway",
             "type": "String"
         },
-        "connections_cn_onprem2cloud_001_name": {
-            "defaultValue": "cn-azure2onprem",
+        "connection": {
+            "defaultValue": "cn-azure-to-onprem",
             "type": "String"
         },
-        "virtualNetworks_azurevnet_name": {
-            "defaultValue": "azurevnet",
+        "vnetPrefix": {
+            "defaultValue": "vnet-cm-",
             "type": "String"
         },
-        "gatewayIpAddress": {
+        "localNetworkGatewayIpAddress": {
             "type": "string",
             "metadata": {
                 "description": "Onpremise VPN GW IP Address"
             }
+        },
+        "sharedKey": {
+            "type": "securestring"
         }
     },
     "variables": {
+        "vnetName": "[concat(parameters('vnetPrefix'),resourceGroup().location)]"
     },
     "resources": [
         {
             "type": "Microsoft.Network/localNetworkGateways",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('localNetworkGateways_lgw_cmonprem_001_name')]",
+            "name": "[parameters('localNetworkGateway')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "localNetworkAddressSpace": {
@@ -43,13 +47,13 @@
                         "192.168.0.0/24"
                     ]
                 },
-                "gatewayIpAddress": "[parameters('gatewayIpAddress')]"
+                "gatewayIpAddress": "[parameters('localNetworkGatewayIpAddress')]"
             }
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('publicIPAddresses_azurevnetvpngatewayip_name')]",
+            "name": "[parameters('publicIPAddress')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Basic",
@@ -64,23 +68,23 @@
         {
             "type": "Microsoft.Network/connections",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('connections_cn_onprem2cloud_001_name')]",
+            "name": "[parameters('connection')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('virtualNetworkGateways_azurevnetvpngateway_name'))]",
-                "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localNetworkGateways_lgw_cmonprem_001_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('virtualNetworkGateway'))]",
+                "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localNetworkGateway'))]"
             ],
             "properties": {
                 "virtualNetworkGateway1": {
-                    "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('virtualNetworkGateways_azurevnetvpngateway_name'))]"
+                    "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('virtualNetworkGateway'))]"
                 },
                 "localNetworkGateway2": {
-                    "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localNetworkGateways_lgw_cmonprem_001_name'))]"
+                    "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localNetworkGateway'))]"
                 },
                 "connectionType": "IPsec",
                 "connectionProtocol": "IKEv2",
                 "routingWeight": 0,
-                "sharedKey": "demo!pass123",
+                "sharedKey": "[parameters('sharedKey')]",
                 "enableBgp": false,
                 "usePolicyBasedTrafficSelectors": false,
                 "ipsecPolicies": [
@@ -93,10 +97,10 @@
         {
             "type": "Microsoft.Network/virtualNetworkGateways",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('virtualNetworkGateways_azurevnetvpngateway_name')]",
+            "name": "[parameters('virtualNetworkGateway')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_azurevnetvpngatewayip_name'))]"
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddress'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -105,10 +109,10 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_azurevnetvpngatewayip_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddress'))]"
                             },
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_azurevnet_name'), 'GatewaySubnet')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), 'GatewaySubnet')]"
                             }
                         }
                     }
@@ -121,11 +125,6 @@
                 "vpnType": "RouteBased",
                 "enableBgp": false,
                 "activeActive": false,
-                "bgpSettings": {
-                    "asn": 65515,
-                    "bgpPeeringAddress": "10.1.254.254",
-                    "peerWeight": 0
-                },
                 "vpnGatewayGeneration": "Generation1"
             }
         }

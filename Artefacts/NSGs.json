@@ -2,28 +2,28 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "networkSecurityGroups_nsg_prod_adds": {
-            "defaultValue": "nsg-prod-adds",
+        "networkSecurityGroups_nsg_adds": {
+            "defaultValue": "nsg-adds",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_prod_cmdb": {
-            "defaultValue": "nsg-prod-cmdb",
+        "networkSecurityGroups_nsg_cmdb": {
+            "defaultValue": "nsg-cmdb",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_prod_cmapp": {
-            "defaultValue": "nsg-prod-cmapp",
+        "networkSecurityGroups_nsg_cmapp": {
+            "defaultValue": "nsg-cmapp",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_prod_cmweb": {
-            "defaultValue": "nsg-prod-cmweb",
+        "networkSecurityGroups_nsg_cmweb": {
+            "defaultValue": "nsg-cmweb",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_prod_cmaapp": {
-            "defaultValue": "nsg-prod-cmaapp",
+        "networkSecurityGroups_nsg_cmaapp": {
+            "defaultValue": "nsg-cmaapp",
             "type": "String"
         },
-        "networkSecurityGroups_nsg_prod_cmaweb": {
-            "defaultValue": "nsg-prod-cmaweb",
+        "networkSecurityGroups_nsg_cmaweb": {
+            "defaultValue": "nsg-cmaweb",
             "type": "String"
         }
     },
@@ -33,7 +33,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_adds')]",
+            "name": "[parameters('networkSecurityGroups_nsg_adds')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -43,7 +43,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_cmaapp')]",
+            "name": "[parameters('networkSecurityGroups_nsg_cmaapp')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -53,7 +53,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_cmapp')]",
+            "name": "[parameters('networkSecurityGroups_nsg_cmapp')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -63,7 +63,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_cmaweb')]",
+            "name": "[parameters('networkSecurityGroups_nsg_cmaweb')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -73,7 +73,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_cmdb')]",
+            "name": "[parameters('networkSecurityGroups_nsg_cmdb')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -83,7 +83,7 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[parameters('networkSecurityGroups_nsg_prod_cmweb')]",
+            "name": "[parameters('networkSecurityGroups_nsg_cmweb')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -159,9 +159,9 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_prod_cmweb'), '/Allow_from_internet_tcp80')]",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Allow_from_internet_tcp80')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_prod_cmweb'))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
             ],
             "properties": {
                 "description": "Allow connections from the internet to TCP/80",
@@ -186,9 +186,9 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_prod_cmweb'), '/Allow_RDP_from_VNet')]",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Allow_RDP_from_VNet')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_prod_cmweb'))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
             ],
             "properties": {
                 "description": "Allow RDP connections from internal network",
@@ -213,9 +213,9 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_prod_cmweb'), '/Override_65000')]",
+            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Override_65000')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_prod_cmweb'))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
             ],
             "properties": {
                 "description": "Override any to any in Vnet",
@@ -237,7 +237,5 @@
                 ]
             }
         }
-    ],
-    "outputs": {
-    }
+    ]
 }

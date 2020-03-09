@@ -35,15 +35,23 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "vnetPrefix": {
+            "defaultValue": "vnet-cm-",
+            "type": "String"
+        },
+        "domainName": {
+            "type": "string",
+            "defaultValue": "contosomortgage"
         }
     },
     "variables": {
-        "virtualNetworks_azurevnet_name": "azurevnet",
-        "DCSubnet": "DomainController",
+        "vnetName": "[concat(parameters('vnetPrefix'),resourceGroup().location)]",
+        "DCSubnet": "snet-adds",
         "storageAccountName": "[concat('addiag',substring(uniqueString(resourceGroup().id),0,4))]",
         "vmNicName": "[concat(parameters('vmName'),'-NIC1')]",
-        "nsgName": "nsg-prod-dc",
-        "availabilitySetName": "avset-AD"
+        "nsgName": "nsg-adds",
+        "availabilitySetName": "avset-adds"
     },
     "resources": [
         {
@@ -123,9 +131,9 @@
                         "name": "ipconfig1",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "10.1.253.4",
+                            "privateIPAddress": "10.1.2.4",
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_azurevnet_name'), variables('DCSubnet'))]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('DCSubnet'))]"
                             },
                             "primary": true,
                             "privateIPAddressVersion": "IPv4"
@@ -210,6 +218,47 @@
                         "enabled": true,
                         "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob]"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-07-01",
+            "name": "[concat(parameters('vmName'), '/BGInfo')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+            ],
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "BGInfo",
+                "typeHandlerVersion": "2.1"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(parameters('vmName'), '/CustomScriptExtension')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+            ],
+            "tags": {
+                "displayName": "DC prep"
+            },
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/bfrankMS/AzureMigrate/master/Artefacts/CSE_AD.ps1"
+                    ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CSE_AD.ps1 ',parameters('domainName'),' ',parameters('adminPassword'))]"
+                },
+                "protectedSettings": {
                 }
             }
         }
