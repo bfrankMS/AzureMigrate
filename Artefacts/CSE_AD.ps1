@@ -49,16 +49,16 @@ switch ($DataDisk0 -ne $null)
     {
         $drive = "$($DataDisk0.DriveLetter):"
         #Install-ADDSForest -DomainName "$DomainName" -DatabasePath "$drive\NTDS" -SysvolPath "$drive\SYSVOL" -LogPath "$drive\Logs" -ForestMode Default -DomainMode Default -InstallDns:$true -SafeModeAdministratorPassword $SecurePassword -CreateDnsDelegation:$false -NoRebootOnCompletion:$true -Force:$true
-        New-ADReplicationSite "Azure-Site"
-        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DatabasePath "$drive\NTDS" -DomainName "$DomainName" -InstallDns:$true -LogPath "$drive\NTDS" -NoRebootOnCompletion:$false -SiteName "Azure-Site"  -SysvolPath "$drive\SYSVOL" -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
+        #New-ADReplicationSite "Azure-Site"
+        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DatabasePath "$drive\NTDS" -DomainName "$DomainName" -InstallDns:$true -LogPath "$drive\NTDS" -NoRebootOnCompletion:$false -SiteName "Default-First-Site-Name"  -SysvolPath "$drive\SYSVOL" -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
     }
     
     #nope - not recommended 
     Default 
     {
         #Install-ADDSForest -DomainName "$DomainName" -ForestMode Default -DomainMode Default -InstallDns:$true -SafeModeAdministratorPassword $SecurePassword -CreateDnsDelegation:$false -NoRebootOnCompletion:$true -Force:$true
-        New-ADReplicationSite "Azure-Site"
-        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DomainName "$DomainName" -InstallDns:$true -NoRebootOnCompletion:$false -SiteName "Azure-Site"  -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
+        #New-ADReplicationSite "Azure-Site"
+        Install-ADDSDomainController -NoGlobalCatalog:$false -CreateDnsDelegation:$false -CriticalReplicationOnly:$false -DomainName "$DomainName" -InstallDns:$true -NoRebootOnCompletion:$false -SiteName "Default-First-Site-Name"  -Force:$true -Credential $Credential -SafeModeAdministratorPassword $SecurePassword
     }
 }
 

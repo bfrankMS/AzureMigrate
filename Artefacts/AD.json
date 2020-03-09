@@ -42,7 +42,7 @@
         },
         "domainName": {
             "type": "string",
-            "defaultValue": "contosomortgage"
+            "defaultValue": "contosomortgage.local"
         }
     },
     "variables": {
