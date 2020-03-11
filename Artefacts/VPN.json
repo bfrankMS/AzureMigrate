@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "localNetworkGateway": {
-            "defaultValue": "lgw-vpnOnprem",
+            "defaultValue": "S2S-lgw-onprem",
             "type": "String"
         },
         "publicIPAddress": {
-            "defaultValue": "pip-vpnGateway",
+            "defaultValue": "S2S-pip-vpngateway",
             "type": "String"
         },
         "virtualNetworkGateway": {
-            "defaultValue": "vpnGateway",
+            "defaultValue": "S2S-vpngateway",
             "type": "String"
         },
         "connection": {
-            "defaultValue": "cn-azure-to-onprem",
+            "defaultValue": "S2S-cn-azure-to-onprem",
             "type": "String"
         },
         "vnetPrefix": {
@@ -25,7 +25,7 @@
         "localNetworkGatewayIpAddress": {
             "type": "string",
             "metadata": {
-                "description": "Onpremise VPN GW IP Address"
+                "description": "The public IP address of your onpremise vpn device."
             }
         },
         "sharedKey": {

@@ -3,15 +3,15 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "connection": {
-            "defaultValue": "cn-azure-to-onprem",
+            "defaultValue": "S2S-cn-azure-to-onprem",
             "type": "String"
         },
         "virtualNetworkGateway": {
-            "defaultValue": "vpnGateway",
+            "defaultValue": "S2S-vpngateway",
             "type": "String"
         },
         "localNetworkGateway": {
-            "defaultValue": "lgw-vpnOnprem",
+            "defaultValue": "S2S-lgw-onprem",
             "type": "String"
         }
     },

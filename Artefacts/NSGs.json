@@ -25,6 +25,10 @@
         "networkSecurityGroups_nsg_cmaweb": {
             "defaultValue": "nsg-cmaweb",
             "type": "String"
+        },
+        "networkSecurityGroups_nsg_testing": {
+            "defaultValue": "nsg-testing",
+            "type": "String"
         }
     },
     "variables": {
@@ -37,6 +41,28 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -47,6 +73,28 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -57,6 +105,28 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -67,6 +137,28 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -77,6 +169,50 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    },
+                    {
+                        "name": "Allow_SQL_from_VNet",
+                        "properties": {
+                            "description": "Allow SQL connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "1433",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1020,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         },
@@ -88,14 +224,14 @@
             "properties": {
                 "securityRules": [
                     {
-                        "name": "Allow_from_internet_tcp80",
+                        "name": "Allow_http_from_internet",
                         "properties": {
                             "description": "Allow connections from the internet to TCP/80",
                             "protocol": "TCP",
                             "sourcePortRange": "*",
                             "destinationPortRange": "80",
                             "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "10.1.2.0/24",
+                            "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 1000,
                             "direction": "Inbound",
@@ -117,7 +253,7 @@
                             "sourcePortRange": "*",
                             "destinationPortRange": "3389",
                             "sourceAddressPrefix": "VirtualNetwork",
-                            "destinationAddressPrefix": "10.1.2.0/24",
+                            "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 1010,
                             "direction": "Inbound",
@@ -132,7 +268,7 @@
                         }
                     },
                     {
-                        "name": "Override_65000",
+                        "name": "Deny_all",
                         "properties": {
                             "description": "Override any to any in Vnet",
                             "protocol": "*",
@@ -157,83 +293,99 @@
             }
         },
         {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Allow_from_internet_tcp80')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
-            ],
+            "name": "[parameters('networkSecurityGroups_nsg_testing')]",
+            "location": "[resourceGroup().location]",
             "properties": {
-                "description": "Allow connections from the internet to TCP/80",
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "80",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "10.1.2.0/24",
-                "access": "Allow",
-                "priority": 1000,
-                "direction": "Inbound",
-                "sourcePortRanges": [
-                ],
-                "destinationPortRanges": [
-                ],
-                "sourceAddressPrefixes": [
-                ],
-                "destinationAddressPrefixes": [
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Allow_RDP_from_VNet')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
-            ],
-            "properties": {
-                "description": "Allow RDP connections from internal network",
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "3389",
-                "sourceAddressPrefix": "VirtualNetwork",
-                "destinationAddressPrefix": "10.1.2.0/24",
-                "access": "Allow",
-                "priority": 1010,
-                "direction": "Inbound",
-                "sourcePortRanges": [
-                ],
-                "destinationPortRanges": [
-                ],
-                "sourceAddressPrefixes": [
-                ],
-                "destinationAddressPrefixes": [
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-            "apiVersion": "2019-08-01",
-            "name": "[concat(parameters('networkSecurityGroups_nsg_cmweb'), '/Override_65000')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_nsg_cmweb'))]"
-            ],
-            "properties": {
-                "description": "Override any to any in Vnet",
-                "protocol": "*",
-                "sourcePortRange": "*",
-                "destinationPortRange": "*",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "VirtualNetwork",
-                "access": "Deny",
-                "priority": 4096,
-                "direction": "Inbound",
-                "sourcePortRanges": [
-                ],
-                "destinationPortRanges": [
-                ],
-                "sourceAddressPrefixes": [
-                ],
-                "destinationAddressPrefixes": [
+                "securityRules": [
+                    {
+                        "name": "Allow_http_from_internet",
+                        "properties": {
+                            "description": "Allow connections from the internet to TCP/80",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    },
+                    {
+                        "name": "Allow_RDP_from_VNet",
+                        "properties": {
+                            "description": "Allow RDP connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    },
+                    {
+                        "name": "Allow_SQL_from_VNet",
+                        "properties": {
+                            "description": "Allow SQL connections from internal network",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "1433",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1020,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    },
+                    {
+                        "name": "DenyAllFromTestingToOnPremise",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "10.1.0.0/24",
+                            "destinationAddressPrefix": "192.168.0.0/24",
+                            "access": "Deny",
+                            "priority": 1000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [
+                            ],
+                            "destinationPortRanges": [
+                            ],
+                            "sourceAddressPrefixes": [
+                            ],
+                            "destinationAddressPrefixes": [
+                            ]
+                        }
+                    }
                 ]
             }
         }
